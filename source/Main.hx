@@ -10,8 +10,6 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
-// import flxcolor
-import flixel.util.FlxColor;
 
 //crash handler stuff
 #if CRASH_HANDLER
@@ -23,10 +21,6 @@ import Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
-#end
-
-#if TOMFOOLERY
-import Transparency;
 #end
 
 using StringTools;
@@ -108,10 +102,6 @@ class Main extends Sprite
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
-
-		#if TOMFOOLERY
-		Transparency.setTransparency("FNFDnB: Revisited Morals", FlxColor.BLACK);
-		#end
 	}
 
 	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
@@ -143,7 +133,7 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nOh fuck. The engine/mod crashed." + "\n Here's the error:" + e.error + "\nPlease report this error to the GitHub page: https://github.com/windows10win7posreadywoeskio/brazil\n\n> Crash Handler written by: sqirra-rng";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/notweuz/FNF-OSEngine\n\n> Crash Handler written by: sqirra-rng";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
@@ -153,72 +143,9 @@ class Main extends Sprite
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		var randomshit:Int = FlxG.random.int(0, 199)
-		Application.current.window.alert(errMsg, "ERROR-int." + randomshit + ".revisitedmorals.lesmthdave.dnb.by.moldygh");
-		#if TOMFOOLERY
-		Application.current.window.alert("oh your unfunny, dumb, you fell off, meowbahh fan and an soft boyfriend fan." + "\nthank you for listening to my ted talk." + "\n\n sincerely, hijinx boyfriend and tomfoolery.", "A Letter.");
-		Application.current.window.alert("oh and i put a pipe bomb on your mailbox", "leSomethingDave");
-		#end
-		var toggleClient:Bool = false
-		#if TOMFOOLERY
-		// DiscordClient.shutdown();
-		#else
+		Application.current.window.alert(errMsg, "Error!");
 		DiscordClient.shutdown();
-		#end
 		Sys.exit(1);
 	}
-	#end
-
-	// this is for debugging
-	#if CRASH_HANDLER
-	#if debug
-	function onCrashDEB(e:String):Void
-	{
-		var errMsg:String = "";
-		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
-
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
-
-		path = "./crash/" + "OSEngine_" + dateNow + ".txt";
-
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
-			}
-		}
-
-		errMsg += "\nOh fuck. The engine/mod crashed." + "\n Here's the error:" + e.error + "\nPlease report this error to the GitHub page: https://github.com/windows10win7posreadywoeskio/brazil\n\n> Crash Handler written by: sqirra-rng";
-
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
-
-		File.saveContent(path, errMsg + "\n");
-
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-
-		var randomshit:Int = FlxG.random.int(0, 199)
-		Application.current.window.alert(errMsg, "ERROR-int." + randomshit + ".revisitedmorals.lesmthdave.dnb.by.moldygh");
-		#if TOMFOOLERY
-		Application.current.window.alert("oh your unfunny, dumb, you fell off, meowbahh fan and an soft boyfriend fan." + "\nthank you for listening to my ted talk." + "\n\n sincerely, hijinx boyfriend and tomfoolery.", "A Letter.");
-		Application.current.window.alert("oh and i put a pipe bomb on your mailbox", "leSomethingDave");
-		#end
-		var toggleClient:Bool = false
-		#if TOMFOOLERY
-		// DiscordClient.shutdown();
-		#else
-		DiscordClient.shutdown();
-		#end
-		Sys.exit(1);
-	}
-	#end
 	#end
 }
